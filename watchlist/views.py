@@ -2,7 +2,7 @@ from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_user, login_required, logout_user
 
 from watchlist import app, db
-from watchlist.models import User, Movie
+from watchlist.models import User, Movie, LeaveMsg
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -106,3 +106,23 @@ def delete(movie_id):
     db.session.commit()
     flash('Item deleted.')
     return redirect(url_for('index'))
+
+
+@app.route('/board', methods=['GET', 'POST'])
+def board():
+    if request.method == 'POST':
+        print(request.form)
+        uname = request.form['username']
+        msg = request.form['message']
+
+        if not uname or not msg or len(uname) > 20 or len(msg) > 256:
+            flash('Invalid input.')
+            return redirect(url_for('board'))
+
+        leaveMsg = LeaveMsg(username=uname, message=msg)
+        db.session.add(leaveMsg)
+        db.session.commit()
+        flash('Item created.')
+        return redirect(url_for('board'))
+    leaveMsgs = LeaveMsg.query.all()
+    return render_template('board.html', leaveMsgs=leaveMsgs)

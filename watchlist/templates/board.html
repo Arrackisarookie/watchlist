@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+  <form method="post">
+    Username <input type="text" name="username" autocomplete="off" required>
+    Message <textarea rows="4" cols="50" name="message"></textarea>
+    <input class="btn" type="submit" name="submit" value="Submit">
+  </form>
+  <p>{{ leaveMsgs|length }} leaveMsgs</p>
+  <ul>
+    {% for leaveMsg in leaveMsgs %}
+    <li>{{ leaveMsg.username }} - {{ leaveMsg.id }} - {{ leaveMsg.timestamp }} - {{ leaveMsg.message }}
+      
+    </li>
+    {% endfor %}
+  </ul>
+  <img class="totoro" alt="Walking totoro" src="{{ url_for('static', filename='images/totoro.gif') }}" title="to~to~ro">
+{% endblock %}

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -21,3 +23,10 @@ class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(60))
     year = db.Column(db.String(4))
+
+
+class LeaveMsg(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20))
+    message = db.Column(db.String(256))
+    timestamp = db.Column(db.DateTime, default=datetime.now, index=True)
